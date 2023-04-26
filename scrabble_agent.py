@@ -40,8 +40,8 @@ def random_word():
   """return a random word from the scrabble dictionary"""
   return random.choice(words)
 
-def better_random_word():
-  chars=input("pleases input what chars you want to use.")
+def better_random_word(chars):
+  """returns a random word based off of a set of input chars"""
   poss_words=word_search(chars)
   return random.choice(poss_words)
 
@@ -120,7 +120,7 @@ def legal_move(board, letters, orientation, x, y, word):
 def random_move(board, letters, timeout=float('inf')):
   while timeout > 0:
     timeout -=1
-    word = random_word()
+    word = better_random_word(letters)
     orientation = random.choice(('down', 'across'))
     x = random.choice(range(15 - (len(word)-1 if orientation == 'across' else 0)))
     y = random.choice(range(15 - (len(word)-1 if orientation == 'down' else 0)))
