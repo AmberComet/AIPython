@@ -1,5 +1,6 @@
 import random
 from collections import defaultdict
+import re
 
 # load scrabble dictionary
 wordsfile = open('data/Collins_Scrabble_Words_2019_.txt')
@@ -38,6 +39,11 @@ def combine_bags(b1, b2):
 def random_word():
   """return a random word from the scrabble dictionary"""
   return random.choice(words)
+
+def better_random_word():
+  chars=input("pleases input what chars you want to use.")
+  poss_words=word_search(chars)
+  return random.choice(poss_words)
 
 def str_to_bag(s):
   letter_bag = defaultdict(lambda : 0)
@@ -121,6 +127,15 @@ def random_move(board, letters, timeout=float('inf')):
     if legal_move(board, letters.copy(), orientation, x, y, word):
          return orientation, x, y, word
       
+def word_search(chars):
+  pattern = "^[" + "".join(chars) + "]+$"
+  regex = re.compile(pattern)
+  matches = []
+  for word in words:
+      if regex.match(word):
+        matches.append(word)
+  return matches
+    
 
     
 """  
@@ -146,7 +161,7 @@ tiles = list(input("Enter player tiles (letters with no spaces): "))
 boardstr = ("."*15 + "\n")*7 + "."*7 + "*" + "."*7 + "\n" + ("."*15 + "\n")*7
 board = read_board(boardstr)
 print_board(board)
-letters = str_to_bag('AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ')
+letters = str_to_bag(input("pleases enter the chars you want to use"))
 
 # testing code that randomly plays the game with a pretty big letter bag
 while True:
@@ -155,3 +170,4 @@ while True:
   print_board(board)
 
 #print_board(board)
+
